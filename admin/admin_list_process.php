@@ -4,9 +4,29 @@
     $del_sql = "DELETE FROM items WHERE item_id = '$_REQUEST[del_item_id]' ";
     mysqli_query($conn, $del_sql);
   }
+
+  if(isset($_REQUEST['up_item_id'])){
+    $item_id = $_REQUEST['up_item_id']; //$brandid = isset($_POST['bidg']) ? $_POST['bidg']: '';
+    $item_title = mysqli_real_escape_string($conn, strip_tags($_REQUEST['item_title']));
+    $item_description = mysqli_real_escape_string($conn, $_REQUEST['item_description']);
+    $item_category = mysqli_real_escape_string($conn, strip_tags($_REQUEST['item_category']));
+    $item_qty = mysqli_real_escape_string($conn, strip_tags($_REQUEST['item_qty']));
+    $item_cost = mysqli_real_escape_string($conn, strip_tags($_REQUEST['item_cost']));
+    $item_price = mysqli_real_escape_string($conn, strip_tags($_REQUEST['item_price']));
+    $item_discount = mysqli_real_escape_string($conn, strip_tags($_REQUEST['item_discount']));
+    $item_delivery = mysqli_real_escape_string($conn, strip_tags($_REQUEST['item_delivery']));
+
+
+    // $item_ins_sql = "INSERT INTO items ( item_title, item_description, item_cat, item_qty, item_cost, item_price, item_discount, item_delivery) VALUES ( '$item_title', '$item_description', '$item_category', '$item_qty', '$item_cost', '$item_price', '$item_discount', '$item_delivery');";
+    $item_up_sql = "UPDATE items SET item_title = '$item_title', item_description = '$item_description', item_cat = '$item_category', item_qty = '$item_qty', item_cost = '$item_cost', item_price = '$item_price', item_discount = '$item_discount', item_delivery = '$item_delivery' WHERE item_id = '$item_id' ";
+    $item_up_run = mysqli_query($conn, $item_up_sql);
+  }
 ?>
 <table class="table table-bordered">
-  <thead>
+  <thead><!-- Kilka rzeczy do poprawienia jest.
+          1. Item description po edycji się zamiast aktualizowac - usuwa
+        2. Nacisnieciu Submit po edycji pozycji ajax aktualizuje wartoś, np item title, ale 'nie wraca' do strony, pozostaje ciemne tło, jak modal zjedzie
+      3. NAJWAŻNIEJSZE - Edit nie działa w pętli, niezależnie od wyboru pozycji, w kursie ciągle prowadzący operował tylko na jednej pozycji, więcej nawet nie dodał i nie sprawdził-->
     <tr>
       <th>No.</th>
       <th>image</th>
@@ -29,7 +49,8 @@
       $sel_run = mysqli_query($conn, $sel_sql);
       while($rows = mysqli_fetch_assoc($sel_run)){
         $discounted_price = $rows['item_price'] - $rows['item_discount'];
-        echo"
+        echo
+        "
         <tr>
           <td>$c</td>
           <td>Image</td>
@@ -58,25 +79,25 @@
                 <div class='modal-content'>
                 <div class='modal-header'>
                   <button class='close' data-dismiss='modal'>x</button>
-                  <h4>Add new item to base:</h4>
-                  
+                  <h4>Edit item id: $rows[item_id]</h4>
                 </div>
+
                 <div class='modal-body'>
-                  <form method='post'>
+                  <div id='form1'>
                     <div class='form-group'>
                       <label>Item title</label>
-                      <input type='text' name='item_title' value='$rows[item_title]' class='form-control'>
+                      <input type='text' id='item_title' value='$rows[item_title]' class='form-control'>
                     </div>
                     <div class='form-group'>
                       <label>Item description</label>
-                      <input type='text'  name='item_description' value='$rows[item_description]' class='form-control'>
+                      <input type='text'  id='item_description' value='$rows[item_description]' class='form-control'>
                     </div>
                     <div class='form-group'>
                       <label>Item category</label>
-                      <select class'form-control' name='item_category'>
+                      <select class'form-control' id='item_category'>
                         <option>Select category</option>";
 
-                          $cat_sql = "SELECT * FROM item_cat";
+                          $cat_sql = "SELECT * FROM item_cat";  //Nie ogarniam się się odawliło przy item description, nie pobierało mi z bazy tej wartości. Dopiero jak dałem echo $rows[item_description] to nagle zaskoczyło pobieranie wartości.
                           $cat_run = mysqli_query($conn, $cat_sql);
                           $cat_rows = mysqli_fetch_assoc($cat_run);
                           if(!$cat_rows){
@@ -105,28 +126,29 @@
                     </div>
                     <div class='form-group'>
                       <label>Item quantity</label>
-                      <input  type='number' value='$rows[item_qty]'  name='item_qty' class='form-control'>
+                      <input  type='number' value='$rows[item_qty]'  id='item_qty' class='form-control'>
                     </div>
                     <div class='form-group'>
                       <label>Item cost</label>
-                      <input  type='number' value='$rows[item_cost]'  name='item_cost' class='form-control'>
+                      <input  type='number' value='$rows[item_cost]'  id='item_cost' class='form-control'>
                     </div>
                     <div class='form-group'>
                       <label>Item price</label>
-                      <input  type='number' value='$rows[item_price]' name='item_price' class='form-control'>
+                      <input  type='number' value='$rows[item_price]' id='item_price' class='form-control'>
                     </div>
                     <div class='form-group'>
                       <label>Item discount</label>
-                      <input  type='number' value='$rows[item_discount]' name='item_discount' class='form-control'>
+                      <input  type='number' value='$rows[item_discount]' id='item_discount' class='form-control'>
                     </div>
                     <div class='form-group'>
                       <label>Item delivery charge</label>
-                      <input  type='number' value='$rows[item_delivery]' name='item_delivery' class='form-control'>
+                      <input  type='number' value='$rows[item_delivery]' id='item_delivery' class='form-control'>
                     </div>
                     <div class='form-group'>
-                      <input  type='submit' name='item_submit' class='btn btn-primary btn-block'>
+                      <input type='number' id='up_item_id' value='$rows[item_id]'>"; ?>
+                      <button onclick="javascript: edit_item();" class='btn btn-primary btn-block'>Submit</button>
                     </div>
-                  </form>
+                  </div>
                 </div>
                 <div class='modal-footer'>
                   <button class='btn btn-danger' data-dismiss='modal'>Close</button>
@@ -136,7 +158,7 @@
             </div>
           </td>
         </tr>
-        ";
+        "<?php
         $c++;
       }
     ?>

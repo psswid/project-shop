@@ -44,7 +44,7 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Item list | Admin panel</title>
     <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
-    <link rel="stylesheet" href="style.css">
+
     <script  src="https://code.jquery.com/jquery-1.12.0.js"></script>
     <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
     <script src="https://cdn.tinymce.com/4/tinymce.min.js"></script>
@@ -76,6 +76,22 @@
         xmlhttp.send();
       }
 
+      function edit_item(item_id){
+        item_id = document.getElementById('up_item_id').value;
+        item_title = document.getElementById('item_title').value;
+        item_description = document.getElementById('item_description').value;
+        item_category = document.getElementById('item_category').value;
+        item_qty = document.getElementById('item_qty').value;
+        item_cost = document.getElementById('item_cost').value;
+        item_price = document.getElementById('item_price').value;
+        item_discount = document.getElementById('item_discount').value;
+        item_delivery = document.getElementById('item_delivery').value;
+
+        xmlhttp.open('POST', 'admin_list_process.php?up_item_id='+item_id+'&item_title='+item_title+'&item_description='+item_description+'&item_category='+item_category+'&item_qty='+item_qty+'&item_cost='+item_cost+'&item_price='+item_price+'&item_discount='+item_discount+'&item_delivery='+item_delivery, true);
+        xmlhttp.send();
+
+      }
+
     </script>
   </head>
   <body onload="get_item_list_data();">
@@ -92,16 +108,16 @@
             <div class="modal-body">
               <form method="post" enctype="multipart/form-data">
                 <div class="form-group">
-                  <label for="">Item image</label>
+                  <label>Item image</label>
                   <input  type="file" name = "item_image" class = "form-control">
                 </div>
                 <div class="form-group">
-                  <label for="">Item title</label>
-                  <input type="text" name = "item_title" class = "form-control">
+                  <label>Item title</label>
+                  <input type="text" name="item_title" class="form-control">
                 </div>
                 <div class="form-group">
-                  <label for="">Item description</label>
-                  <textarea  name = "item_description" class = "form-control"></textarea>
+                  <label>Item description</label>
+                  <textarea  name="item_description" class="form-control"></textarea>
                 </div>
                 <div class="form-group">
                   <label for="">Item category</label>
