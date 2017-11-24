@@ -26,7 +26,8 @@
   <thead><!-- Kilka rzeczy do poprawienia jest.
           1. Item description po edycji się zamiast aktualizowac - usuwa
         2. Nacisnieciu Submit po edycji pozycji ajax aktualizuje wartoś, np item title, ale 'nie wraca' do strony, pozostaje ciemne tło, jak modal zjedzie
-      3. NAJWAŻNIEJSZE - Edit nie działa w pętli, niezależnie od wyboru pozycji, w kursie ciągle prowadzący operował tylko na jednej pozycji, więcej nawet nie dodał i nie sprawdził-->
+      3. NAJWAŻNIEJSZE - Edit nie działa w pętli, niezależnie od wyboru pozycji, w kursie ciągle prowadzący operował tylko na jednej pozycji, więcej nawet nie dodał i nie sprawdził
+    3. Naprawione, musiałem w przycisku i w divie zacyznającym modal zmienic '#edit_modal' na '#edit_modal$rows[item_id]'   -->
     <tr>
       <th>No.</th>
       <th>image</th>
@@ -68,13 +69,13 @@
                 <button class='btn btn-danger dropdown-toggle' data-toggle='dropdown'>Actions <span class='caret'></span></button>
                 <ul class='dropdown-menu dropdown-menu-right'>
                   <li>
-                    <a href='#edit_modal' data-toggle='modal'>Edit</a>
+                    <a href='#edit_modal$rows[item_id]' data-toggle='modal'>Edit</a>
 
                   </li;"; ?>
                   <li><a href="javascript:;" onclick="del_item(<?php echo $rows['item_id'];?>)">Delete</a></li>
           <?php  echo "</ul>
             </div>
-            <div class='modal fade' id='edit_modal'>
+            <div class='modal fade' id='edit_modal$rows[item_id]'>
               <div class='modal-dialog'>
                 <div class='modal-content'>
                 <div class='modal-header'>
