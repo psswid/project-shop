@@ -1,3 +1,9 @@
+<?php
+// Written by Piotr Swiderski
+// stefan91kg@gmail.com / psswiderski@gmail.com
+// Based on "The Complete Web Development Masterclass: Beginner To Advanced!" on udemy.com
+// 11.2017
+?>
 <?php include "../includes/database.php";
   if(isset($_POST['item_submit'])){
     $item_title = mysqli_real_escape_string($conn, strip_tags($_POST['item_title']));

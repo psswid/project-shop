@@ -1,4 +1,10 @@
 <?php
+// Written by Piotr Swiderski
+// stefan91kg@gmail.com / psswiderski@gmail.com
+// Based on "The Complete Web Development Masterclass: Beginner To Advanced!" on udemy.com
+// 11.2017
+?>
+<?php
   //session_start();   wykomentowane, bo sesja z buy.php juz jest
   include 'includes/database.php';
   if(isset($_REQUEST['check_del_id'])){
